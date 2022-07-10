@@ -8,6 +8,7 @@ import (
 
 func main() {
 	// create routes
+	http.HandleFunc("/api", Controllers.Api)
 	http.HandleFunc("/", Controllers.Home)
 
 	// start server

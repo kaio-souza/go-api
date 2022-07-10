@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
+func Api(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 
 	response := Entities.ApiResponse{
-		Message: "Test",
-		Status:  "Status Test",
+		Message: "Welcome to API",
+		Secret:  "Secret Data",
 	}
 
 	jsonResponse, err := json.Marshal(response)
