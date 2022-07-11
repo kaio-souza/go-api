@@ -1,5 +1,5 @@
 # Only a study about go
-Simple and basic json response
+Simple implementation of resources based on API and other basic related usages 
 
 ## Getting Started
 ### Get Dependecies
