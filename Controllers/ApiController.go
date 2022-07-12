@@ -2,23 +2,39 @@ package Controllers
 
 import (
 	"encoding/json"
+	gt "github.com/bas24/googletranslatefree"
+	"go-api/Constants"
 	"go-api/Entities"
 	"go-api/Helpers"
+	"io/ioutil"
 	"net/http"
 )
 
 func Api(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
+	chuckResponse := getJoke()
+	//jsonResponse, err := json.Marshal(response)
 
 	response := Entities.ApiResponse{
-		Message: "Welcome to API",
-		Secret:  "Secret Data",
+		Message: translateJoke(chuckResponse.Joke),
 	}
+	Helpers.SetJsonHeaders(w)
+	jsonResponse := Helpers.JsonEncode(response)
 
-	jsonResponse, err := json.Marshal(response)
-	Helpers.ValidateErr(err)
 	w.Write(jsonResponse)
 	return
+}
 
+func getJoke() Entities.JokeResponse {
+	var responseObject Entities.JokeResponse
+
+	response, _ := http.Get(Constants.ChuckNorrisEndpoint)
+	responseData, _ := ioutil.ReadAll(response.Body)
+
+	json.Unmarshal(responseData, &responseObject)
+	return responseObject
+}
+
+func translateJoke(joke string) string {
+	result, _ := gt.Translate(joke, "en", "pt-BR")
+	return result
 }
